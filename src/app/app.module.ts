@@ -2,7 +2,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
+import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppFooterComponent } from './core/components/app-footer/app-footer.component';
@@ -27,8 +29,15 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({app: appStore.reducer}),
-    EffectsModule.forRoot([AppEffects])
+    StoreModule.forRoot({
+      app: appStore.reducer,
+      router: routerReducer
+    }),
+    StoreRouterConnectingModule.forRoot(),
+    EffectsModule.forRoot([AppEffects]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
